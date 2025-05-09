@@ -43,18 +43,27 @@ if loc is not None:
         'name': ['Your Location']
     })
 else:
+    user_lat = None
+    user_lon = None
     user_location_df = pd.DataFrame({
         'latitude': ["42.3555"],
         'longitude': ["71.0565"],
         'name': ['Your Location']
     })
 
+if user_lat is None:
+    start_lat = 42.3876     # Latitude for Somerville, MA
+    start_lon = -71.0995    # Longitude for Somerville, MA
+else:
+    start_lat = user_lat
+    start_lon = user_lon
+
 # Create a map using pydeck
 st.pydeck_chart(pdk.Deck(
     map_style='mapbox://styles/mapbox/streets-v11',
     initial_view_state=pdk.ViewState(
-        latitude=42.3876,  # Latitude for Somerville, MA
-        longitude=-71.0995,  # Longitude for Somerville, MA
+        latitude=start_lat,
+        longitude=start_lon,
         zoom=13,
         pitch=25,
     ),
@@ -71,7 +80,6 @@ st.pydeck_chart(pdk.Deck(
             radius_min_pixels=5,
             radius_max_pixels=10,
             line_width_min_pixels=1,
-            # get_radius=10,
             get_line_color=[0, 0, 0],
             pickable=True,  # Enable picking for tooltips
         ),
@@ -82,7 +90,10 @@ st.pydeck_chart(pdk.Deck(
             opacity=0.8,
             get_color='[0, 0, 255, 160]',  # Blue for user location
             get_line_color=[0, 0, 0],
-            get_radius=100,
+            radius_scale=6,
+            radius_min_pixels=10,
+            radius_max_pixels=15,
+            line_width_min_pixels=1,
         ),
     ],
     tooltip={
