@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 import geocoder
+import ipinfo
 from typing import Optional, Tuple
 
 
@@ -19,21 +20,13 @@ def get_location_ipapi() -> Tuple[Optional[float], Optional[float]]:
     Fallback method using ipapi.co service
     """
     try:
-        response = requests.get('https://ipapi.co/json/')
-        if response.status_code == 200:
-            data = response.json()
-            lat = data.get('latitude')
-            lon = data.get('longitude')
-
-            if lat is not None and lon is not None:
-                # Store additional location data in session state
-                st.session_state.location_data = {
-                    'city': data.get('city'),
-                    'region': data.get('region'),
-                    'country': data.get('country_name'),
-                    'ip': data.get('ip')
-                }
-                return lat, lon
+        # Use ipapi.co to get location data
+        access_token = "763845d8e2c36d"
+        handler = ipinfo.getHandler(access_token)
+        details = handler.getDetails()
+        lat = details.latitude
+        lon = details.longitude
+        return lat, lon
     except requests.RequestException as e:
         st.error(f"Error retrieving location from ipapi.co: {str(e)}")
     return None, None
