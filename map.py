@@ -1,6 +1,6 @@
-import streamlit as st
 import pandas as pd
 import pydeck as pdk
+import streamlit as st
 from streamlit_js_eval import get_geolocation
 
 # Load the data
@@ -13,20 +13,25 @@ st.title("Bands Map")
 df = df.dropna(subset=['latitude', 'longitude'])
 
 # Get user's location
-if st.checkbox("Check to get location"):
-    loc = get_geolocation()
+
+loc = get_geolocation()
+
+if loc is not None:
     user_lat = loc["coords"]["latitude"]
     user_lon = loc["coords"]["longitude"]
 
     # Add user's location to the map if available
-    if user_lat is not None and user_lon is not None:
-        user_location_df = pd.DataFrame({
-            'latitude': [user_lat],
-            'longitude': [user_lon],
-            'name': ['Your Location']
-        })
-    else:
-        user_location_df = pd.DataFrame(columns=['latitude', 'longitude', 'name'])
+    user_location_df = pd.DataFrame({
+        'latitude': [user_lat],
+        'longitude': [user_lon],
+        'name': ['Your Location']
+    })
+else:
+    user_location_df = pd.DataFrame({
+        'latitude': ["42.3555"],
+        'longitude': ["71.0565"],
+        'name': ['Your Location']
+    })
 
 # Create a map using pydeck
 st.pydeck_chart(pdk.Deck(
