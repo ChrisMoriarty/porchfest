@@ -6,6 +6,23 @@ from streamlit_js_eval import get_geolocation
 # Load the data
 df = pd.read_csv('bands_with_lat_long.csv')
 
+# Define a color mapping based on the Time column
+def map_time_to_color(time):
+    if time.startswith("12:"):
+        return [51, 212, 255]  # Blue
+    elif time.startswith("1:"):
+        return [51, 212, 255]  # Blue
+    elif time.startswith("2:"):
+        return [103, 255, 51]  # Green
+    elif time.startswith("3:"):
+        return [255, 255, 0]  # Green
+    else:
+        return [255, 249, 51 ]  # Yellow
+
+# Add a color column to the dataframe
+df['color'] = df['Time'].apply(map_time_to_color)
+
+
 # Streamlit app title
 st.title("Somerville Porchfest Map :musical_note: :beers:")
 
@@ -13,7 +30,6 @@ st.title("Somerville Porchfest Map :musical_note: :beers:")
 df = df.dropna(subset=['latitude', 'longitude'])
 
 # Get user's location
-
 loc = get_geolocation()
 
 if loc is not None:
@@ -40,22 +56,32 @@ st.pydeck_chart(pdk.Deck(
         latitude=42.3876,  # Latitude for Somerville, MA
         longitude=-71.0995,  # Longitude for Somerville, MA
         zoom=13,
-        pitch=50,
+        pitch=25,
     ),
     layers=[
         pdk.Layer(
             'ScatterplotLayer',
             data=df,
             get_position='[longitude, latitude]',
-            get_color='[200, 30, 0, 160]',  # Red for bands
-            get_radius=30,
+            get_color='color',
+            opacity=0.8,
+            stroked=True,
+            filled=True,
+            radius_scale=6,
+            radius_min_pixels=5,
+            radius_max_pixels=10,
+            line_width_min_pixels=1,
+            # get_radius=10,
+            get_line_color=[0, 0, 0],
             pickable=True,  # Enable picking for tooltips
         ),
         pdk.Layer(
             'ScatterplotLayer',
             data=user_location_df,
             get_position='[longitude, latitude]',
+            opacity=0.8,
             get_color='[0, 0, 255, 160]',  # Blue for user location
+            get_line_color=[0, 0, 0],
             get_radius=100,
         ),
     ],
