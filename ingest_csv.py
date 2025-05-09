@@ -24,7 +24,7 @@ df = pd.read_csv('bands.csv')
 # Compute latitude and longitude for each address with rate limiting
 lat_long_results = []
 for addr in df['Address']:
-    lat_long = get_lat_long(addr)
+    lat_long = get_lat_long(addr + ', Somerville, MA')
     lat_long_results.append(lat_long)
     print(lat_long)
     # time.sleep(1)  # Add a delay to respect rate limits

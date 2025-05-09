@@ -7,7 +7,7 @@ from streamlit_js_eval import get_geolocation
 df = pd.read_csv('bands_with_lat_long.csv')
 
 # Streamlit app title
-st.title("Bands Map")
+st.title("Somerville Porchfest Map :musical_note: :beers:")
 
 # Filter data for valid latitude and longitude
 df = df.dropna(subset=['latitude', 'longitude'])
@@ -67,7 +67,3 @@ st.pydeck_chart(pdk.Deck(
         "style": {"backgroundColor": "steelblue", "color": "white"}
     }
 ))
-
-# Display the data table
-st.write("Band Details")
-st.dataframe(df)
