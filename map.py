@@ -48,7 +48,7 @@ st.pydeck_chart(pdk.Deck(
             data=df,
             get_position='[longitude, latitude]',
             get_color='[200, 30, 0, 160]',  # Red for bands
-            get_radius=100,
+            get_radius=30,
             pickable=True,  # Enable picking for tooltips
         ),
         pdk.Layer(
@@ -56,7 +56,7 @@ st.pydeck_chart(pdk.Deck(
             data=user_location_df,
             get_position='[longitude, latitude]',
             get_color='[0, 0, 255, 160]',  # Blue for user location
-            get_radius=150,
+            get_radius=100,
         ),
     ],
     tooltip={
