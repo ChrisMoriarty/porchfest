@@ -13,19 +13,20 @@ st.title("Bands Map")
 df = df.dropna(subset=['latitude', 'longitude'])
 
 # Get user's location
-loc = get_geolocation()
-user_lat = loc["coords"]["latitude"]
-user_lon = loc["coords"]["longitude"]
+if st.checkbox("Check to get location"):
+    loc = get_geolocation()
+    user_lat = loc["coords"]["latitude"]
+    user_lon = loc["coords"]["longitude"]
 
-# Add user's location to the map if available
-if user_lat is not None and user_lon is not None:
-    user_location_df = pd.DataFrame({
-        'latitude': [user_lat],
-        'longitude': [user_lon],
-        'name': ['Your Location']
-    })
-else:
-    user_location_df = pd.DataFrame(columns=['latitude', 'longitude', 'name'])
+    # Add user's location to the map if available
+    if user_lat is not None and user_lon is not None:
+        user_location_df = pd.DataFrame({
+            'latitude': [user_lat],
+            'longitude': [user_lon],
+            'name': ['Your Location']
+        })
+    else:
+        user_location_df = pd.DataFrame(columns=['latitude', 'longitude', 'name'])
 
 # Create a map using pydeck
 st.pydeck_chart(pdk.Deck(
