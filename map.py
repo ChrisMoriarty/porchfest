@@ -77,8 +77,8 @@ st.pydeck_chart(pdk.Deck(
             stroked=True,
             filled=True,
             radius_scale=6,
-            radius_min_pixels=10,
-            radius_max_pixels=15,
+            radius_min_pixels=8,
+            radius_max_pixels=10,
             line_width_min_pixels=1,
             get_line_color=[0, 0, 0],
             pickable=True,  # Enable picking for tooltips
